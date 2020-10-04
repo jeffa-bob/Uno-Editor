@@ -13,7 +13,7 @@ namespace Editor
         [UI] private Button _openfilebutton = null;
         [UI] private Button _openfolderbutton = null;
         [UI] private Grid _maingrid = null;
-        private FolderExplorer _folderexplore = new FolderExplorer(Orientation.Vertical, 5);
+        private FolderExplorer _folderexplore = new FolderExplorer();
 
         private int _counter;
 
@@ -22,6 +22,7 @@ namespace Editor
         private MainWindow(Builder builder) : base(builder.GetObject("MainWindow").Handle)
         {
             builder.Autoconnect(this);
+
 
             DeleteEvent += Window_DeleteEvent;
             _button1.Clicked += Button1_Clicked;
