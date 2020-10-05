@@ -8,14 +8,13 @@ namespace Editor
 {
     class MainWindow : Window
     {
-        [UI] private Label _label1 = null;
-        [UI] private Button _button1 = null;
         [UI] private Button _openfilebutton = null;
         [UI] private Button _openfolderbutton = null;
         [UI] private Grid _maingrid = null;
+        [UI] private Notebook _maineditorbook = null;
         private FolderExplorer _folderexplore = new FolderExplorer(Orientation.Vertical, 5);
 
-        private int _counter;
+
 
         public MainWindow() : this(new Builder("MainWindow.glade")) { }
 
@@ -24,10 +23,10 @@ namespace Editor
             builder.Autoconnect(this);
 
             DeleteEvent += Window_DeleteEvent;
-            _button1.Clicked += Button1_Clicked;
             _openfilebutton.Clicked += Openfile_Clicked;
             _openfolderbutton.Clicked += Openfolder_Clicked;
-            _maingrid.Add(_folderexplore);
+            _folderexplore.openfile += OpenFolderOpenFile;
+            _maingrid.AttachNextTo(_folderexplore, _openfilebutton, PositionType.Bottom, 1, 5);
         }
 
         private void Window_DeleteEvent(object sender, DeleteEventArgs a)
@@ -35,14 +34,7 @@ namespace Editor
             Application.Quit();
         }
 
-        private void Button1_Clicked(object sender, EventArgs a)
-        {
-            _counter++;
-            _label1.Text = "Hello World! This button has been clicked " + _counter + " time(s).";
-            Gdk.RGBA color = new Gdk.RGBA();
-            color.Parse("#0ff54c");
-            _label1.OverrideColor(StateFlags.Normal, color);
-        }
+        public void 
 
         private void Openfile_Clicked(object sender, EventArgs a)
         {
@@ -55,11 +47,22 @@ namespace Editor
 
             if (fc.Run() == (int)ResponseType.Accept)
             {
-                System.IO.FileStream file = System.IO.File.OpenRead(fc.Filename);
-                file.Close();
+            FileTextEditor editor = new FileTextEditor();
+            editor.Setfile(fc.Filename);
+            _maineditorbook.AppendPage(editor,editor.tabutton);
+            _maineditorbook.ShowAll();
             }
             //Don't forget to call Destroy() or the FileChooserDialog window won't get closed.
             fc.Dispose();
+        }
+
+        private void OpenFolderOpenFile(object sender, EventArgs a){
+            FileInfo info = sender as FileInfo;
+            FileTextEditor editor = new FileTextEditor();
+            editor.Setfile(info);
+            _maineditorbook.AppendPage(editor,editor.tabutton);
+            _maineditorbook.ShowAll();
+
         }
 
         private void Openfolder_Clicked(object sender, EventArgs a)
@@ -79,5 +82,6 @@ namespace Editor
             //Don't forget to call Destroy() or the FileChooserDialog window won't get closed.
             fc.Dispose();
         }
+
     }
 }

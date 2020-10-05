@@ -12,6 +12,7 @@ class FolderExplorer : Box
 
     public event EventHandler openfile;
 
+
     private DirectoryInfo directory;
 
     public FolderExplorer(Orientation orientation, int spacing) : base(orientation, spacing)
