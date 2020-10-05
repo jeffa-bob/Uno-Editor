@@ -5,8 +5,10 @@ using System;
 using UI = Gtk.Builder.ObjectAttribute;
 using System.Collections.Generic;
 
-class FolderExplorer : Box
+class FolderExplorer : ScrolledWindow
 {
+
+    private Box box = new Box(Orientation.Vertical, 2);
 
     private Label Current_Directory = new Label();
 
@@ -15,12 +17,14 @@ class FolderExplorer : Box
 
     private DirectoryInfo directory;
 
-    public FolderExplorer(Orientation orientation, int spacing) : base(orientation, spacing)
+    public FolderExplorer() : base()
     {
         base.BorderWidth = 2;
         Gdk.RGBA color = new Gdk.RGBA();
         color.Parse("#0ff54c");
-        base.OverrideBackgroundColor(StateFlags.Backdrop, color);
+        base.WidthRequest = 100;
+        base.HeightRequest = 400;
+        //base.OverrideBackgroundColor(StateFlags.Backdrop, color);
     }
 
     private void clickhandler(object sender, EventArgs e)
@@ -36,7 +40,7 @@ class FolderExplorer : Box
         Console.WriteLine(path);
         directory = new DirectoryInfo(path);
         Current_Directory = new Label(directory.Name);
-        base.Add(Current_Directory);
+        box.Add(Current_Directory);
         FileInfo[] tempfiles = directory.GetFiles();
 
         foreach (FileInfo file in tempfiles)
@@ -46,8 +50,10 @@ class FolderExplorer : Box
             filebutton.ActionName = file.FullName;
             filebutton.Clicked += clickhandler;
             filebutton.Sensitive = true;
-            base.Add(filebutton);
+            box.Add(filebutton);
         }
+        box.ShowAll();
+        base.Add(box);
         base.ShowAll();
     }
 }

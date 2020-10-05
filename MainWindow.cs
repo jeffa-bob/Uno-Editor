@@ -12,7 +12,7 @@ namespace Editor
         [UI] private Button _openfolderbutton = null;
         [UI] private Grid _maingrid = null;
         [UI] private Notebook _maineditorbook = null;
-        private FolderExplorer _folderexplore = new FolderExplorer(Orientation.Vertical, 5);
+        private FolderExplorer _folderexplore = new FolderExplorer();
 
 
 
@@ -21,6 +21,7 @@ namespace Editor
         private MainWindow(Builder builder) : base(builder.GetObject("MainWindow").Handle)
         {
             builder.Autoconnect(this);
+
 
             DeleteEvent += Window_DeleteEvent;
             _openfilebutton.Clicked += Openfile_Clicked;
@@ -34,7 +35,6 @@ namespace Editor
             Application.Quit();
         }
 
-        public void 
 
         private void Openfile_Clicked(object sender, EventArgs a)
         {
