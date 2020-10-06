@@ -11,7 +11,9 @@ namespace Editor
         [UI] private Button _openfilebutton = null;
         [UI] private Button _openfolderbutton = null;
         [UI] private Button _SaveButton = null;
-        [UI] private Grid _maingrid = null;
+        [UI] private Box _mainbox = null;
+        [UI] private Box _savebuttonbox = null;
+        [UI] private Paned _mainpaned = null;
         [UI] private Notebook _maineditorbook = null;
         private FolderExplorer _folderexplore = new FolderExplorer();
 
@@ -34,7 +36,8 @@ namespace Editor
             _openfilebutton.Clicked += Openfile_Clicked;
             _openfolderbutton.Clicked += Openfolder_Clicked;
             _folderexplore.openfile += OpenFolderOpenFile;
-            _maingrid.AttachNextTo(_folderexplore, _openfilebutton, PositionType.Bottom, 1, 5);
+            _mainpaned.Add1(_folderexplore);
+            _mainpaned.Add2(_maineditorbook);
             FileTextEditor.closefile += CloseEditor;
         }
 
