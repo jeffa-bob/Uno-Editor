@@ -59,6 +59,7 @@ namespace Editor
             if (fc.Run() == (int)ResponseType.Accept)
             {
             FileTextEditor editor = new FileTextEditor();
+            editor.Expand = true;
             editor.Setfile(fc.Filename);
             _maineditorbook.AppendPage(editor,editor.tabutton);
             _maineditorbook.ShowAll();
@@ -70,6 +71,7 @@ namespace Editor
         private void OpenFolderOpenFile(object sender, EventArgs a){
             FileInfo info = sender as FileInfo;
             FileTextEditor editor = new FileTextEditor();
+            editor.Expand = true;
             editor.Setfile(info);
             _maineditorbook.AppendPage(editor,editor.tabutton);
             _maineditorbook.ShowAll();
