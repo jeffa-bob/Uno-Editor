@@ -10,6 +10,7 @@ namespace Editor
     {
         [UI] private Button _openfilebutton = null;
         [UI] private Button _openfolderbutton = null;
+        [UI] private Button _SaveButton = null;
         [UI] private Grid _maingrid = null;
         [UI] private Notebook _maineditorbook = null;
         private FolderExplorer _folderexplore = new FolderExplorer();
@@ -20,14 +21,21 @@ namespace Editor
 
         private MainWindow(Builder builder) : base(builder.GetObject("MainWindow").Handle)
         {
+
+            base.SetDefaultSize(900,900);
+            CssProvider provider = new CssProvider();
+            provider.LoadFromPath(@"Styles/gtk-dark.gtk-3.0.Materia.css");
+
             builder.Autoconnect(this);
 
+            Gtk.StyleContext.AddProviderForScreen(Gdk.Screen.Default, provider, 800); 
 
             DeleteEvent += Window_DeleteEvent;
             _openfilebutton.Clicked += Openfile_Clicked;
             _openfolderbutton.Clicked += Openfolder_Clicked;
             _folderexplore.openfile += OpenFolderOpenFile;
             _maingrid.AttachNextTo(_folderexplore, _openfilebutton, PositionType.Bottom, 1, 5);
+            FileTextEditor.closefile += CloseEditor;
         }
 
         private void Window_DeleteEvent(object sender, DeleteEventArgs a)
@@ -81,6 +89,10 @@ namespace Editor
             }
             //Don't forget to call Destroy() or the FileChooserDialog window won't get closed.
             fc.Dispose();
+        }
+
+        public void CloseEditor(object sender, EventArgs e){
+            _maineditorbook.Remove(sender as FileTextEditor);
         }
 
     }

@@ -18,8 +18,8 @@ class FileTextEditor : ScrolledWindow
         base.Add(view);
     }
 
-    public void CloseEditor(object sender, EventArgs e){
-        closefile.Invoke(openfile, e);
+    private void CloseEditor(object sender, EventArgs e){
+        closefile?.Invoke(this, e);
     }
 
     public void Setfile(string filepath)
@@ -38,10 +38,10 @@ class FileTextEditor : ScrolledWindow
                 view.Buffer.Text = filetext;
 
                 Label filelabel = new Label(openfile.Name);
-                Button filebutton = new Button("Close", IconSize.Menu);
+                Button filebutton = new Button("window-close", IconSize.Menu);
                 filebutton.Clicked += CloseEditor;
-                tabutton.Add(filebutton);
                 tabutton.Add(filelabel);
+                tabutton.Add(filebutton);
                 tabutton.ShowAll();
             }
             base.ShowAll();
