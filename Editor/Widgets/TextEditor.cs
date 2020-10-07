@@ -15,6 +15,8 @@ class FileTextEditor : ScrolledWindow
 
     public FileTextEditor(): base(){
         view.ShowAll();
+        view.AcceptsTab = true;
+        view.Monospace = true;
         base.Add(view);
     }
 
