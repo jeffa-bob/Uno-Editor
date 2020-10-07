@@ -12,8 +12,18 @@ namespace Editor
 
             var app = new Application("org.Editor.Editor", GLib.ApplicationFlags.None);
             app.Register(GLib.Cancellable.Current);
+            MainWindow win = null;
 
-            var win = new MainWindow();
+            if (args.Length == 1)
+            {
+                if (System.IO.Directory.Exists(args[0]))
+                    win = new MainWindow(args[0]);
+                else
+                    win = new MainWindow();
+            }
+            else
+                win = new MainWindow();
+
             app.AddWindow(win);
 
             win.Show();

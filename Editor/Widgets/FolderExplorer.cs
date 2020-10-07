@@ -20,10 +20,7 @@ class FolderExplorer : ScrolledWindow
     public FolderExplorer() : base()
     {
         base.BorderWidth = 2;
-        Gdk.RGBA color = new Gdk.RGBA();
-        color.Parse("#0ff54c");
-        base.WidthRequest = 100;
-        base.HeightRequest = 400;
+        base.WidthRequest = 250;
         //base.OverrideBackgroundColor(StateFlags.Backdrop, color);
     }
 
@@ -37,7 +34,6 @@ class FolderExplorer : ScrolledWindow
     {
         if (!System.IO.Path.EndsInDirectorySeparator(path))
             path += System.IO.Path.DirectorySeparatorChar;
-        Console.WriteLine(path);
         directory = new DirectoryInfo(path);
         Current_Directory = new Label(directory.Name);
         box.Add(Current_Directory);

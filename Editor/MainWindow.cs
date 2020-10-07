@@ -13,32 +13,51 @@ namespace Editor
         [UI] private Button _SaveButton = null;
         [UI] private Box _mainbox = null;
         [UI] private Box _savebuttonbox = null;
-        [UI] private Paned _mainpaned = null;
+        [UI] private Box _mainpaned = null;
         [UI] private Notebook _maineditorbook = null;
         private FolderExplorer _folderexplore = new FolderExplorer();
+        private bool blankopen = true;
 
 
+        public MainWindow() : this(new Builder("MainWindow.glade"))
+        {
+            _mainpaned.Add(_maineditorbook);
 
-        public MainWindow() : this(new Builder("MainWindow.glade")) { }
+        }
+        public MainWindow(string path) : this(new Builder("MainWindow.glade"))
+        {
+            Console.WriteLine("The Directory is " + path);
+
+            if (path != null)
+            {
+                _folderexplore.SetDirectory(path);
+            }
+            _mainpaned.Add(_maineditorbook);
+            _mainpaned.Add(_folderexplore);
+
+        }
+
 
         private MainWindow(Builder builder) : base(builder.GetObject("MainWindow").Handle)
         {
 
-            base.SetDefaultSize(900,900);
+            base.SetDefaultSize(900, 900);
             CssProvider provider = new CssProvider();
-            provider.LoadFromPath(@"Styles/gtk-dark.gtk-3.0.Materia.css");
+            provider.LoadFromPath(@"Styles/gtk.gtk-3.0.Materia.css");
 
             builder.Autoconnect(this);
 
-            Gtk.StyleContext.AddProviderForScreen(Gdk.Screen.Default, provider, 800); 
+            Gtk.StyleContext.AddProviderForScreen(Gdk.Screen.Default, provider, 800);
 
             DeleteEvent += Window_DeleteEvent;
             _openfilebutton.Clicked += Openfile_Clicked;
             _openfolderbutton.Clicked += Openfolder_Clicked;
-            _folderexplore.openfile += OpenFolderOpenFile;
-            _mainpaned.Add1(_folderexplore);
-            _mainpaned.Add2(_maineditorbook);
             FileTextEditor.closefile += CloseEditor;
+            _folderexplore.openfile += OpenFolderOpenFile;
+
+            //Added to keep the Notebook from Breaking
+            _maineditorbook.Add(new Label("Open A file"));
+
         }
 
         private void Window_DeleteEvent(object sender, DeleteEventArgs a)
@@ -58,22 +77,35 @@ namespace Editor
 
             if (fc.Run() == (int)ResponseType.Accept)
             {
-            FileTextEditor editor = new FileTextEditor();
-            editor.Expand = true;
-            editor.Setfile(fc.Filename);
-            _maineditorbook.AppendPage(editor,editor.tabutton);
-            _maineditorbook.ShowAll();
+                FileTextEditor editor = new FileTextEditor();
+                editor.Expand = true;
+                editor.Setfile(fc.Filename);
+                _maineditorbook.AppendPage(editor, editor.tabutton);
+                if (blankopen)
+                {
+                    _maineditorbook.RemovePage(0);
+                    blankopen = false;
+                }
+                _maineditorbook.CurrentPage = _maineditorbook.NPages-1;
+                _maineditorbook.ShowAll();
             }
             //Don't forget to call Destroy() or the FileChooserDialog window won't get closed.
             fc.Dispose();
         }
 
-        private void OpenFolderOpenFile(object sender, EventArgs a){
+        private void OpenFolderOpenFile(object sender, EventArgs a)
+        {
             FileInfo info = sender as FileInfo;
             FileTextEditor editor = new FileTextEditor();
             editor.Expand = true;
             editor.Setfile(info);
-            _maineditorbook.AppendPage(editor,editor.tabutton);
+            _maineditorbook.AppendPage(editor, editor.tabutton);
+            if (blankopen)
+            {
+                _maineditorbook.RemovePage(0);
+                blankopen = false;
+            }
+            _maineditorbook.CurrentPage = _maineditorbook.NPages-1;
             _maineditorbook.ShowAll();
 
         }
@@ -96,7 +128,13 @@ namespace Editor
             fc.Dispose();
         }
 
-        public void CloseEditor(object sender, EventArgs e){
+        public void CloseEditor(object sender, EventArgs e)
+        {
+            if (_maineditorbook.NPages == 1)
+            {
+                _maineditorbook.Add(new Label("Open A file"));
+                blankopen = true;
+            }
             _maineditorbook.Remove(sender as FileTextEditor);
         }
 
