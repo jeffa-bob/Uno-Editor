@@ -11,8 +11,8 @@ namespace Editor
     [UI] private Button _openfilebutton = null;
     [UI] private Button _openfolderbutton = null;
     [UI] private Button _SaveButton = null;
-    [UI] private Box _mainbox = null;
-    [UI] private Box _savebuttonbox = null;
+   // [UI] private Box _mainbox = null;
+    //[UI] private Box _savebuttonbox = null;
     [UI] private Box _mainpaned = null;
     [UI] private Notebook _maineditorbook = null;
     private FolderExplorer _folderexplore = new FolderExplorer();
@@ -52,6 +52,7 @@ namespace Editor
       DeleteEvent += Window_DeleteEvent;
       _openfilebutton.Clicked += Openfile_Clicked;
       _openfolderbutton.Clicked += Openfolder_Clicked;
+      _SaveButton.Clicked += SaveButton_Click;
       FileTextEditor.closefile += CloseEditor;
       _folderexplore.openfile += OpenFolderOpenFile;
 
@@ -67,8 +68,7 @@ namespace Editor
 
     private void SaveButton_Click(object sender, EventArgs e)
     {
-      FileTextEditor a = _maineditorbook.CurrentPageWidget as FileTextEditor;
-      a.SaveFile();
+      ((FileTextEditor)_maineditorbook.CurrentPageWidget).SaveFile();
     }
     private void Openfile_Clicked(object sender, EventArgs a)
     {

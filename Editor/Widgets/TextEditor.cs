@@ -57,6 +57,7 @@ class FileTextEditor : ScrolledWindow
         {
             file.SetLength(0);
             byte[] text = System.Text.Encoding.UTF8.GetBytes(view.Buffer.Text);
+            Console.WriteLine(view.Buffer.Text);
             file.Write(text, 0, text.Length);
         }
     }
