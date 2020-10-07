@@ -18,7 +18,7 @@ jobs:
       with:
         dotnet-version: 3.1.301
     - name: Install dependencies
-      run: dotnet restore --project ./Editor/Editor.sln
+      run: dotnet restore ./Editor/Editor.sln
     - name: Build
       run: dotnet build --configuration Release --no-restore
     - name: Test
