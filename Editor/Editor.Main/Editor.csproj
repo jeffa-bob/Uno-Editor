@@ -13,12 +13,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Antlr4.Runtime.Standard" Version="4.8.0" />
     <PackageReference Include="GtkSharp" Version="3.22.25.*" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Editor.Text\Editor.Text\Editor.Text.csproj" />
+    <ProjectReference Include="..\Editor.Text\Editor.Text.csproj" />
   </ItemGroup>
 
 </Project>
