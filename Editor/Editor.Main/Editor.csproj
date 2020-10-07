@@ -17,4 +17,8 @@
     <PackageReference Include="GtkSharp" Version="3.22.25.*" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Editor.Text\Editor.Text\Editor.Text.csproj" />
+  </ItemGroup>
+
 </Project>
