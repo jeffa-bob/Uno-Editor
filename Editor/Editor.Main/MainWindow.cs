@@ -11,7 +11,7 @@ namespace Editor
     [UI] private Button _openfilebutton = null;
     [UI] private Button _openfolderbutton = null;
     [UI] private Button _SaveButton = null;
-   // [UI] private Box _mainbox = null;
+    // [UI] private Box _mainbox = null;
     //[UI] private Box _savebuttonbox = null;
     [UI] private Box _mainpaned = null;
     [UI] private Notebook _maineditorbook = null;
@@ -81,19 +81,8 @@ namespace Editor
 
       if (fc.Run() == (int)ResponseType.Accept)
       {
-        FileTextEditor editor = new FileTextEditor();
-        editor.Expand = true;
-        editor.Setfile(fc.Filename);
-        _maineditorbook.AppendPage(editor, editor.tabutton);
-        _maineditorbook.SetTabReorderable(editor, true);
+        MakeEditor(new FileInfo(fc.Filename));
 
-        if (blankopen)
-        {
-          _maineditorbook.RemovePage(0);
-          blankopen = false;
-        }
-        _maineditorbook.CurrentPage = _maineditorbook.NPages - 1;
-        _maineditorbook.ShowAll();
       }
       //Don't forget to call Destroy() or the FileChooserDialog window won't get closed.
       fc.Dispose();
@@ -102,19 +91,7 @@ namespace Editor
     private void OpenFolderOpenFile(object sender, EventArgs a)
     {
       FileInfo info = sender as FileInfo;
-      FileTextEditor editor = new FileTextEditor();
-      editor.Expand = true;
-      editor.Setfile(info);
-      _maineditorbook.AppendPage(editor, editor.tabutton);
-      _maineditorbook.SetTabReorderable(editor, true);
-
-      if (blankopen)
-      {
-        _maineditorbook.RemovePage(0);
-        blankopen = false;
-      }
-      _maineditorbook.CurrentPage = _maineditorbook.NPages - 1;
-      _maineditorbook.ShowAll();
+      MakeEditor(info);
 
     }
 
@@ -148,5 +125,22 @@ namespace Editor
       _maineditorbook.Remove(sender as FileTextEditor);
     }
 
+    public void MakeEditor(FileInfo info)
+    {
+
+      FileTextEditor editor = new FileTextEditor();
+      editor.Expand = true;
+      editor.Setfile(info);
+      _maineditorbook.AppendPage(editor, editor.tabutton);
+      _maineditorbook.SetTabReorderable(editor, true);
+
+      if (blankopen)
+      {
+        _maineditorbook.RemovePage(0);
+        blankopen = false;
+      }
+      _maineditorbook.CurrentPage = _maineditorbook.NPages - 1;
+      _maineditorbook.ShowAll();
+    }
   }
 }
