@@ -43,7 +43,7 @@ namespace Editor
 
             base.SetDefaultSize(900, 900);
             CssProvider provider = new CssProvider();
-            provider.LoadFromPath(@"Styles/gtk.gtk-3.0.Materia.css");
+            provider.LoadFromPath(@"Styles/gtk-dark.gtk-3.0.Materia.css");
 
             builder.Autoconnect(this);
 
@@ -123,6 +123,8 @@ namespace Editor
             {
                 //System.Console.WriteLine(fc.Filename);
                 _folderexplore.SetDirectory(fc.Filename);
+                _mainpaned.Remove(_folderexplore);
+                _mainpaned.Add(_folderexplore);
             }
             //Don't forget to call Destroy() or the FileChooserDialog window won't get closed.
             fc.Dispose();
