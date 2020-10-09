@@ -1,24 +1,18 @@
 using System;
-using Antlr4.Runtime;
-using Antlr4.Runtime.Atn;
+using Sprache;
 
 namespace Editor.Text
 {
-    class TextLexer : Lexer
+    class TextParser
     {
-        Recognizer<IToken, LexerATNSimulator> RuleNames { get; set; }
-        Recognizer<IToken, LexerATNSimulator> Vocabulary { get; set; }
-        Recognizer<IToken, LexerATNSimulator> GrammarFileName { get; set; }
-
-        public TextLexer(ICharStream text):base(text){}
-    }
-    class TextParser : Parser
-    {
-        Recognizer<IToken, ParserATNSimulator> RuleNames { get; set; }
-        Recognizer<IToken, ParserATNSimulator> Vocabulary { get; set; }
-        Recognizer<IToken, ParserATNSimulator> GrammarFileName { get; set; }
-
-        public TextParser(ITokenStream text) : base(text)
+        string text;
+        Input input;
+        
+        public TextParser() { }
+        public TextParser(string text)
         {
+            this.text = text;
+            input = new Input(text);
         }
     }
+}
